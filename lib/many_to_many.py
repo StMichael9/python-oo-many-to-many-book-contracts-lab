@@ -24,9 +24,11 @@ class Author:
         return new_contract
 
     def total_royalties(self):
-        pass
-    
-       
+        total = 0
+        for contract in self.contracts():
+            total += contract.royalties
+        return total
+
 
 
 class Book:
@@ -36,8 +38,21 @@ class Book:
 
         Book.all.append(self)
     
-        
+    def contracts(self):
+        book_contracts = []
+        for contract in Contract.all:
+            if contract.book == self:
+                book_contracts.append(contract)
+        return book_contracts
 
+
+    def authors(self):
+        book_authors = []
+        for contract in self.contracts():
+            book_authors.append(contract.author)
+        return book_authors
+    
+        
 class Contract:
     all = []
     def __init__(self, author, book, date, royalties):
